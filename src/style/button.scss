@@ -1,0 +1,23 @@
+
+.task{
+  .btn{
+    margin-left: auto;
+    margin-right: 0;
+    &:last-child{
+      margin-left: 5px;
+    }
+    
+    }
+  .btn-outline-danger:last-child{
+    border-color: #8CB84A;
+    color: #8CB84A;
+    &:hover{
+      background-color:  #8CB84A;
+      border-color: #8CB84A;
+      color: white;
+    }
+    &:focus{
+      box-shadow: 0 0 0 0.25rem rgba(105, 209, 113, 0.5);;
+    }
+  }
+}

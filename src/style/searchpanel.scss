@@ -1,0 +1,40 @@
+.search{
+  
+ 
+&-panel{
+display: flex;
+
+}
+&-input{
+  width: 350px;
+  margin: 5px;
+  height: 38px;
+  border: solid  1px #99999B;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.taskfilter-panel-btn{
+  margin: 5px;
+  border: solid  1px #99999B;
+  border-radius: 8px;
+ 
+}
+  .btn{
+    &:first-child{
+      margin-right: 0;
+    }
+  }
+  .btn-outline-danger{
+    border-color:  gray;
+    color: rgb(99, 96, 96);
+    &:hover{
+      background-color:  grey;
+      border-color: grey;
+      color: white;
+    }
+    &:focus{
+      box-shadow: 0 0 0 0.2rem rgba(109, 117, 131, 0.5);
+    }
+}
+}

@@ -1,0 +1,30 @@
+.taskfilter-buttons{
+  display: flex;
+  justify-content: space-around;
+
+.btn{
+  width: 85px;
+    margin: 5px;
+    font-size: 14px;
+    position: relative;
+      left: 14px;
+}
+.btn-outline-danger{
+  border-color:  rgba(26, 101, 240, 0.5);
+  color: rgb(99, 96, 96);
+  &:hover{
+    background-color:  steelblue;
+    border-color: steelblue;
+    color: white;
+  }
+  &:focus{
+    box-shadow: 0 0 0 0.2rem rgba(26, 101, 240, 0.5);
+  }
+  &:last-child{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 8px;
+  }
+}
+  }
