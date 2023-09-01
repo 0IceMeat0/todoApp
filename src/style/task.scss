@@ -3,8 +3,10 @@
  display: flex;
  word-break: break-all;
  &-item{
+  display: flex;
   width: 320px;
   height: auto;
+
  }
  &__time{
   font-size: 10px;
@@ -13,8 +15,9 @@
   right: 120px;
  }
 }
-.done{
-  text-decoration: line-through;
+.text{
+margin-left: 10px;
+cursor: auto;
 }
 .edited{
 	height: 50px;

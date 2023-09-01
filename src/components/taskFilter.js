@@ -1,23 +1,32 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class Taskfilter extends Component {
   render() {
     return (
       <div className="taskfilter-buttons">
-        <button className="taskfilter-panel-btn btn btn-outline-danger" onClick={() => this.props.statusFilter('all')}>
+        <button
+          className="taskfilter-panel-btn btn btn-outline-danger"
+          onClick={() => this.props.statusFilter("all")}
+        >
           All
         </button>
         <button
           className="taskfilter-panel-btn btn btn-outline-danger"
-          onClick={() => this.props.statusFilter('active')}
+          onClick={() => this.props.statusFilter("active")}
         >
           ACTIVE
         </button>
-        <button className="taskfilter-panel-btn btn btn-outline-danger" onClick={() => this.props.statusFilter('done')}>
+        <button
+          className="taskfilter-panel-btn btn btn-outline-danger"
+          onClick={() => this.props.statusFilter("done")}
+        >
           DONE
         </button>
-        <button className="taskfilter-panel-btn btn btn-outline-danger" onClick={() => this.props.clearCompleted()}>
+        <button
+          className="taskfilter-panel-btn btn btn-outline-danger"
+          onClick={() => this.props.clearCompleted()}
+        >
           <i className="bi bi-trash">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -34,12 +43,14 @@ export default class Taskfilter extends Component {
           Clear completed
         </button>
       </div>
-    )
+    );
   }
 }
 Taskfilter.defaultProps = {
   statusFilter: () => {},
+  clearCompleted: () => {},
 };
 Taskfilter.propTypes = {
   statusFilter: PropTypes.func,
+  clearCompleted: PropTypes.func,
 };

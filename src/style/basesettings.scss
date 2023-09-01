@@ -21,7 +21,7 @@ position: relative;
 list-style: none;
 text-decoration: none;
 font: inherit;
-cursor: pointer;
+
 color: inherit;
 }
 :root{
@@ -38,4 +38,11 @@ header button:hover{
 }
 .none{
   display: none;
+}
+.done{
+  text-decoration: line-through;
+
+}
+input{
+  cursor: pointer;
 }

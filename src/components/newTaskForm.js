@@ -16,7 +16,7 @@ export default class NewTaskForm extends Component {
 
 onSubmit = (e) => {
   e.preventDefault();
-  this.props.addItem(this.state.label);
+  this.props.onAdd(this.state.label);
   this.setState({
     label: "",
   });
@@ -39,6 +39,10 @@ onSubmit = (e) => {
 };
 };
 
-NewTaskForm.prototype = {
-  addItem: PropTypes.func
+NewTaskForm.defaultProps = {
+  onAdd: () => {},
+};
+
+NewTaskForm.propTypes = {
+  onAdd: PropTypes.func,
 };

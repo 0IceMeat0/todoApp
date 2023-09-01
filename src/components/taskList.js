@@ -1,13 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
-import Task from './task';
+import Task from "./task";
 
-const TaskList = ({ todos, onDeleted, onToggleDone, onToggleEdit }) => {
+function TaskList({ todos, onDeleted, onToggleDone, onToggleEdit }) {
   const elements = todos.map((item) => {
     const { id, vision, ...itemProps } = item;
-    let className = 'list-group-item';
-    if (vision === false) className += ' none';
+    let className = "list-group-item";
+    if (vision === false) className += " none";
     return (
       <li key={id} className={className}>
         <Task
@@ -18,9 +18,9 @@ const TaskList = ({ todos, onDeleted, onToggleDone, onToggleEdit }) => {
         />
       </li>
     );
-  })
+  });
 
-  return <ul className="list-group todo-list">{elements}</ul>
+  return <ul className="list-group todo-list">{elements}</ul>;
 }
 
 TaskList.defaultProps = {
