@@ -46,7 +46,7 @@ cursor: auto;
 &__input{
 	height: 40px;
 	width: 90%;
-	margin: 0;
+  padding: 10px;
 &::placeholder{
 	font-size: 20px;
 }

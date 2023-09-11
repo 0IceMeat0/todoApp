@@ -20,8 +20,22 @@ export default class App extends Component {
     todoData: [],
   };
 
-  statusFilter = (text) => {
-    if (text === "done") {
+  onToggleStatus = (id, status) => {
+    this.setState(({ todoData }) => {
+      const inx = todoData.findIndex((el) => el.id === id);
+      const oldItem = todoData[inx];
+      const newItem = { ...oldItem, [status]: !oldItem[status] };
+      const before = todoData.slice(0, inx);
+      const after = todoData.slice(inx + 1);
+      const newArray = [...before, newItem, ...after];
+      return {
+        todoData: newArray,
+      };
+    });
+  };
+
+  statusFilterParametr = (get) => {
+    if (get === 1) {
       this.setState(({ todoData }) => {
         for (const el of todoData) {
           if (el.done === false) {
@@ -33,7 +47,7 @@ export default class App extends Component {
         };
       });
     }
-    if (text === "all") {
+    if (get === 2) {
       this.setState(({ todoData }) => {
         for (const el of todoData) {
           if (el.vision === false) {
@@ -45,7 +59,7 @@ export default class App extends Component {
         };
       });
     }
-    if (text === "active") {
+    if (get === 3) {
       this.setState(({ todoData }) => {
         for (const el of todoData) {
           if (el.done === true) {
@@ -59,46 +73,34 @@ export default class App extends Component {
     }
   };
 
+  statusFilter = (text) => {
+    if (text === "done") {
+      this.statusFilterParametr(1);
+    }
+    if (text === "all") {
+      this.statusFilterParametr(2);
+    }
+    if (text === "active") {
+      this.statusFilterParametr(3);
+    }
+  };
+
   onToggleEdit = (id) => {
-    this.setState(({ todoData }) => {
-      const inx = todoData.findIndex((el) => el.id === id);
-      const oldTask = todoData[inx];
-      const newTask = { ...oldTask, edited: !oldTask.edited };
-      const before = todoData.slice(0, inx);
-      const after = todoData.slice(inx + 1);
-      const newArr = [...before, newTask, ...after];
-      if (!oldTask.done)
-        return {
-          todoData: newArr,
-        };
-    });
+    this.onToggleStatus(id, "edited");
   };
 
   onToggleDone = (id) => {
-    this.setState(({ todoData }) => {
-      const inx = todoData.findIndex((el) => el.id === id);
-
-      const oldItem = todoData[inx];
-      const newItem = { ...oldItem, done: !oldItem.done };
-      const before = todoData.slice(0, inx);
-      const after = todoData.slice(inx + 1);
-      const newArray = [...before, newItem, ...after];
-      return {
-        todoData: newArray,
-      };
-    });
+    this.onToggleStatus(id, "done");
   };
 
   clearCompleted = () => {
     this.setState(({ todoData }) => {
       const updatedToDoData = todoData.filter((task) => !task.done);
-
       updatedToDoData.forEach((task) => {
         if (task.done) {
           this.deleteItem(task.id);
         }
       });
-
       return {
         todoData: updatedToDoData,
       };
@@ -137,7 +139,6 @@ export default class App extends Component {
       id: this.maxId++,
       edited: false,
       vision: true,
-      date: new Date(),
     };
   }
 
