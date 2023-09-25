@@ -17,7 +17,7 @@ function Timer({ min, sec }) {
   const resetTimer = () => {
     setIsActive(false);
     setMinutes(min);
-    setSeconds(sec);
+    setSeconds(sec || 0); // Устанавливаем 0, если sec не указан
   };
 
   const toggleTimer = () => {
