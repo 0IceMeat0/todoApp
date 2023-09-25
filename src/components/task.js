@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { formatDistanceToNow } from "date-fns";
 import { SvgCloser, SvgReduce, SvgAccept } from "./svg-component";
+import Timer from "./timer";
 
 export default class Task extends Component {
   state = {
@@ -15,8 +17,16 @@ export default class Task extends Component {
   };
 
   render() {
-    const { onDeleted, onToggleDone, done, edited, onToggleEdit } = this.props;
-
+    const {
+      min,
+      sec,
+      date,
+      onDeleted,
+      onToggleDone,
+      done,
+      edited,
+      onToggleEdit,
+    } = this.props;
     let classNames = "task-item";
     if (done) {
       classNames += " done";
@@ -50,6 +60,13 @@ export default class Task extends Component {
           <input type="checkbox" onClick={onToggleDone} />
           <div className="text">{this.state.label}</div>
         </div>
+        <span className="task__time">
+          {`created ${formatDistanceToNow(date, {
+            includeSeconds: true,
+            addSuffix: true,
+          })}`}
+        </span>
+        <Timer min={min} sec={sec} />
         <div className="task-buttons">
           <button className="btn btn-outline-danger closer" onClick={onDeleted}>
             <SvgCloser />
@@ -72,6 +89,7 @@ Task.defaultProps = {
   done: false,
   edited: false,
   onToggleEdit: () => {},
+  date: new Date(),
 };
 Task.propTypes = {
   onDeleted: PropTypes.func,
@@ -79,4 +97,5 @@ Task.propTypes = {
   done: PropTypes.bool,
   edited: PropTypes.bool,
   onToggleEdit: PropTypes.func,
+  date: PropTypes.any,
 };

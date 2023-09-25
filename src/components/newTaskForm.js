@@ -2,9 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 export default class NewTaskForm extends Component {
-  state = {
-    label: "",
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      label: "",
+      min: "",
+      sec: "",
+    };
+  }
 
   onLabelChange = (e) => {
     this.setState({
@@ -12,11 +17,38 @@ export default class NewTaskForm extends Component {
     });
   };
 
+  onMinChange = (e) => {
+    const inputValue = e.target.value;
+    const isNumeric = /^\d+$/.test(inputValue);
+    const secValue = parseInt(inputValue, 10);
+
+    if (isNumeric && secValue >= 0 && secValue <= 60) {
+      this.setState({
+        min: secValue,
+      });
+    }
+  };
+
+  onSecChange = (e) => {
+    const inputValue = e.target.value;
+    const isNumeric = /^\d+$/.test(inputValue);
+    const secValue = parseInt(inputValue, 10);
+
+    if (isNumeric && secValue >= 0 && secValue <= 60) {
+      this.setState({
+        sec: secValue,
+      });
+    }
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.onAdd(this.state.label);
+    const { label, min, sec } = this.state;
+    this.props.onAdd(label, min, sec);
     this.setState({
       label: "",
+      min: "",
+      sec: "",
     });
   };
 
@@ -25,12 +57,23 @@ export default class NewTaskForm extends Component {
       <div className="search">
         <form className="search-panel" onSubmit={this.onSubmit}>
           <input
-            onChange={this.onLabelChange}
+            onChange={(e) => this.onLabelChange(e)}
             className="search-input"
             placeholder="What needs to be done"
             value={this.state.label}
           />
-
+          <input
+            onChange={(e) => this.onMinChange(e)}
+            className="search-input-timer"
+            placeholder="Min"
+            value={this.state.min}
+          />
+          <input
+            onChange={(e) => this.onSecChange(e)}
+            className="search-input-timer"
+            placeholder="Sec"
+            value={this.state.sec}
+          />
           <div className="task-add-form">
             <button className="taskfilter-panel-btn btn btn-outline-danger">
               Add Task

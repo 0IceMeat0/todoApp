@@ -120,9 +120,9 @@ export default class App extends Component {
     });
   };
 
-  addItem = (text) => {
-    if (text.length !== 0 && text.split("")[0] !== " ") {
-      const newItem = this.createToDoItem(text);
+  addItem = (text, min, sec) => {
+    if (text.length !== 0 && text.trim() !== "") {
+      const newItem = this.createToDoItem(text, min, sec);
       this.setState(({ todoData }) => {
         const newArray = [...todoData, newItem];
         return {
@@ -132,13 +132,16 @@ export default class App extends Component {
     }
   };
 
-  createToDoItem(label) {
+  createToDoItem(label, min, sec) {
     return {
       label,
       done: false,
       id: this.maxId++,
       edited: false,
       vision: true,
+      data: new Date(),
+      min,
+      sec,
     };
   }
 
@@ -148,7 +151,12 @@ export default class App extends Component {
     return (
       <div>
         <AppHeader done={doneCount} todo={todoCount} />
-        <NewTaskForm onAdd={this.addItem} />
+        <NewTaskForm
+          onAdd={this.addItem}
+          label={this.state.label}
+          min={this.state.min}
+          sec={this.state.sec}
+        />
         <TaskList
           todos={this.state.todoData}
           onDeleted={this.deleteItem}
