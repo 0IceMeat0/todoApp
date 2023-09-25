@@ -6,6 +6,7 @@ display: flex;
 
 }
 &-input{
+
   width: 295px;
   margin-top: 5px;
   margin-left: 5px;
@@ -38,8 +39,13 @@ display: flex;
  
 }
   .btn{
+
+    
     &:first-child{
       margin-right: 0;
+    }
+    @media (max-width: 600px) {
+      width: 121%;
     }
   }
   .btn-outline-danger{

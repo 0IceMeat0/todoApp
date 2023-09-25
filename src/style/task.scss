@@ -8,6 +8,10 @@
   position: relative;
   top: 15px;
   right: 20px;
+  @media (max-width: 600px) {
+    width: 100%;
+    left: 84px;
+  }
  }
  &-item{
   display: flex;
