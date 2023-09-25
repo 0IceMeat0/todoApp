@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { SvgPause, SvgStart, SvgRestart } from "./svg-component";
 
 function Timer({ min, sec }) {
-  const [minutes, setMinutes] = useState(min);
-  const [seconds, setSeconds] = useState(sec);
+  const [minutes, setMinutes] = useState(min ? parseInt(min, 10) : 0);
+  const [seconds, setSeconds] = useState(sec ? parseInt(sec, 10) : 0);
   const [isActive, setIsActive] = useState(true);
 
   const startTimer = () => {
