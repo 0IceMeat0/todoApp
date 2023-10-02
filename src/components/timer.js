@@ -30,26 +30,31 @@ function Timer({ min, sec }) {
 
   useEffect(() => {
     let interval;
-
+  
     if (isActive) {
       interval = setInterval(() => {
-        if (minutes === 0 && seconds === 0) {
-          pauseTimer();
-        } else if (seconds === 0) {
-          setMinutes((prevMinutes) => prevMinutes - 1);
-          setSeconds(59);
-        } else {
-          setSeconds((prevSeconds) => prevSeconds - 1);
-        }
+        setSeconds((prevSeconds) => {
+          if (prevSeconds === 0) {
+            setMinutes((prevMinutes) => {
+              if (prevMinutes === 0) {
+                pauseTimer();
+                return 0;
+              }
+              return prevMinutes - 1;
+            });
+            return 59;
+          }
+          return prevSeconds - 1;
+        });
       }, 1000);
     } else {
       clearInterval(interval);
     }
-
+  
     return () => {
       clearInterval(interval);
     };
-  }, [isActive, minutes, seconds]);
+  }, [isActive]);
 
   useEffect(() => {
     if (min > 0 || sec > 0) {

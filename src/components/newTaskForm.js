@@ -61,18 +61,21 @@ export default class NewTaskForm extends Component {
             className="search-input"
             placeholder="What needs to be done"
             value={this.state.label}
+            required 
           />
           <input
             onChange={(e) => this.onMinChange(e)}
             className="search-input-timer"
             placeholder="Min"
             value={this.state.min}
+            required 
           />
           <input
             onChange={(e) => this.onSecChange(e)}
             className="search-input-timer"
             placeholder="Sec"
             value={this.state.sec}
+            required 
           />
           <div className="task-add-form">
             <button className="taskfilter-panel-btn btn btn-outline-danger">
@@ -92,3 +95,7 @@ NewTaskForm.defaultProps = {
 NewTaskForm.propTypes = {
   onAdd: PropTypes.func,
 };
+
+
+
+

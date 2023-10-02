@@ -1,23 +1,15 @@
 import React from "react";
 import { SvgRubish } from "./svg-component";
 
-export default function TaskFilterButtons({ label, onClick }) {
-  if (label === "Clear completed") {
-    return (
-      <button
-        className="taskfilter-panel-btn btn btn-outline-danger"
-        onClick={onClick}
-      >
-        <SvgRubish />
-        {label}
-      </button>
-    );
-  }
+export default function TaskFilterButtons({ label, active, onClick }) {
   return (
     <button
-      className="taskfilter-panel-btn btn btn-outline-danger"
+      className={`taskfilter-panel-btn btn btn-outline-danger ${
+        active ? "active" : ""
+      }`}
       onClick={onClick}
     >
+      {label === "Clear completed" ? <SvgRubish /> : null}
       {label}
     </button>
   );
