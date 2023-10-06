@@ -1,91 +1,77 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-export default class NewTaskForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      label: "",
-      min: "",
-      sec: "",
-    };
-  }
+function NewTaskForm({ onAdd }) {
+  const [text, setText] = useState("");
+  const [min, setMin] = useState(0);
+  const [sec, setSec] = useState(0);
 
-  onLabelChange = (e) => {
-    this.setState({
-      label: e.target.value,
-    });
-  };
-
-  onMinChange = (e) => {
+  const onMinChange = (e) => {
     const inputValue = e.target.value;
     const isNumeric = /^\d+$/.test(inputValue);
-    const secValue = parseInt(inputValue, 10);
+    const newMin = parseInt(inputValue, 10);
 
-    if (isNumeric && secValue >= 0 && secValue <= 60) {
-      this.setState({
-        min: secValue,
-      });
+    if (isNumeric && newMin >= 0 && newMin <= 60) {
+      setMin(newMin);
+      if (newMin === 0 && sec === 0) {
+        setSec(0); 
+      }
     }
   };
 
-  onSecChange = (e) => {
+  const onSecChange = (e) => {
     const inputValue = e.target.value;
     const isNumeric = /^\d+$/.test(inputValue);
-    const secValue = parseInt(inputValue, 10);
+    const newSec = parseInt(inputValue, 10);
 
-    if (isNumeric && secValue >= 0 && secValue <= 60) {
-      this.setState({
-        sec: secValue,
-      });
+    if (isNumeric && newSec >= 0 && newSec <= 60) {
+      setSec(newSec);
+      if (newSec === 0 && min === 0) {
+        setMin(0); 
+      }
     }
   };
 
-  onSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    const { label, min, sec } = this.state;
-    this.props.onAdd(label, min, sec);
-    this.setState({
-      label: "",
-      min: "",
-      sec: "",
-    });
+    onAdd(text, min, sec);
+    setText("");
+    setMin(0);
+    setSec(0);
   };
 
-  render() {
-    return (
-      <div className="search">
-        <form className="search-panel" onSubmit={this.onSubmit}>
-          <input
-            onChange={(e) => this.onLabelChange(e)}
-            className="search-input"
-            placeholder="What needs to be done"
-            value={this.state.label}
-            required 
-          />
-          <input
-            onChange={(e) => this.onMinChange(e)}
-            className="search-input-timer"
-            placeholder="Min"
-            value={this.state.min}
-            required 
-          />
-          <input
-            onChange={(e) => this.onSecChange(e)}
-            className="search-input-timer"
-            placeholder="Sec"
-            value={this.state.sec}
-            required 
-          />
-          <div className="task-add-form">
-            <button className="taskfilter-panel-btn btn btn-outline-danger">
-              Add Task
-            </button>
-          </div>
-        </form>
-      </div>
-    );
-  }
+  return (
+    <div className="search">
+      <form className="search-panel" onSubmit={onSubmit}>
+        <input
+          onChange={(e) => setText(e.target.value)}
+          className="search-input"
+          placeholder="What needs to be done"
+          value={text}
+          required
+        />
+        <input
+          onChange={(e) => onMinChange(e)}
+          className="search-input-timer"
+          placeholder="Min"
+          value={min || ""}
+      
+        />
+        <input
+          onChange={(e) => onSecChange(e)}
+          className="search-input-timer"
+          placeholder="Sec"
+          value={sec || ""}
+          required
+        />
+        <div className="task-add-form">
+          <button className="taskfilter-panel-btn btn btn-outline-danger">
+            Add Task
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 }
 
 NewTaskForm.defaultProps = {
@@ -96,6 +82,4 @@ NewTaskForm.propTypes = {
   onAdd: PropTypes.func,
 };
 
-
-
-
+export default NewTaskForm;

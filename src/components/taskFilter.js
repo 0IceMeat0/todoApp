@@ -1,32 +1,31 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import TaskFilterButtons from "./constatns";
 
-export default class Taskfilter extends Component {
-  render() {
+ function Taskfilter({statusFilter, clearCompleted}) {
+
     return (
       <div className="taskfilter-buttons">
         <TaskFilterButtons
           label="All"
-          onClick={() => this.props.statusFilter("all")}
+          onClick={() => statusFilter("all")}
         />
         <TaskFilterButtons
           label="ACTIVE"
-          onClick={() => this.props.statusFilter("active")}
+          onClick={() => statusFilter("active")}
         />
         <TaskFilterButtons
           label="DONE"
-          onClick={() => this.props.statusFilter("done")}
+          onClick={() => statusFilter("done")}
         />
         <TaskFilterButtons
           label="Clear completed"
-          onClick={() => this.props.clearCompleted()}
+          onClick={() => clearCompleted()}
         />
       </div>
     );
   }
-}
 Taskfilter.defaultProps = {
   statusFilter: () => {},
   clearCompleted: () => {},
@@ -35,3 +34,4 @@ Taskfilter.propTypes = {
   statusFilter: PropTypes.func,
   clearCompleted: PropTypes.func,
 };
+export default Taskfilter;

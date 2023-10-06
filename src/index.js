@@ -1,4 +1,4 @@
-import React, { StrictMode, Component } from "react";
+import React, { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./style/button.scss";
 import "./style/tasklist.scss";
@@ -13,164 +13,100 @@ import TaskList from "./components/taskList";
 import NewTaskForm from "./components/newTaskForm";
 import Taskfilter from "./components/taskFilter";
 
-export default class App extends Component {
-  maxId = 1;
+export default function App() {
 
-  state = {
-    todoData: [],
-  };
+  const [todoData, setTodoData] = useState([]);
+  const [maxId, setMaxId] = useState(1);
+  
+  const createToDoItem = (label, min, sec) => ({
+    label,
+    done: false,
+    id: maxId,
+    edited: false,
+    vision: true,
+    data: new Date(),
+    min,
+    sec,
+  });
 
-  onToggleStatus = (id, status) => {
-    this.setState(({ todoData }) => {
-      const inx = todoData.findIndex((el) => el.id === id);
-      const oldItem = todoData[inx];
-      const newItem = { ...oldItem, [status]: !oldItem[status] };
-      const before = todoData.slice(0, inx);
-      const after = todoData.slice(inx + 1);
-      const newArray = [...before, newItem, ...after];
-      return {
-        todoData: newArray,
-      };
-    });
-  };
-
-  statusFilterParametr = (get) => {
-    if (get === 1) {
-      this.setState(({ todoData }) => {
-        for (const el of todoData) {
-          if (el.done === false) {
-            el.vision = false;
-          } else el.vision = true;
-        }
-        return {
-          todoData: this.state.todoData,
-        };
-      });
-    }
-    if (get === 2) {
-      this.setState(({ todoData }) => {
-        for (const el of todoData) {
-          if (el.vision === false) {
-            el.vision = true;
-          }
-        }
-        return {
-          todoData: this.state.todoData,
-        };
-      });
-    }
-    if (get === 3) {
-      this.setState(({ todoData }) => {
-        for (const el of todoData) {
-          if (el.done === true) {
-            el.vision = false;
-          } else el.vision = true;
-        }
-        return {
-          todoData: this.state.todoData,
-        };
-      });
+  const addItem = (text, min, sec) => {
+    if (text.trim() !== "") {
+      const newItem = createToDoItem(text, min, sec);
+      setTodoData((prevData) => [...prevData, newItem]);
+      setMaxId(maxId + 1);
     }
   };
 
-  statusFilter = (text) => {
-    if (text === "done") {
-      this.statusFilterParametr(1);
-    }
-    if (text === "all") {
-      this.statusFilterParametr(2);
-    }
-    if (text === "active") {
-      this.statusFilterParametr(3);
-    }
+  const deleteItem = (id) => {
+    setTodoData((prevData) => prevData.filter((item) => item.id !== id));
   };
 
-  onToggleEdit = (id) => {
-    this.onToggleStatus(id, "edited");
-  };
-
-  onToggleDone = (id) => {
-    this.onToggleStatus(id, "done");
-  };
-
-  clearCompleted = () => {
-    this.setState(({ todoData }) => {
-      const updatedToDoData = todoData.filter((task) => !task.done);
-      updatedToDoData.forEach((task) => {
-        if (task.done) {
-          this.deleteItem(task.id);
-        }
-      });
-      return {
-        todoData: updatedToDoData,
-      };
-    });
-  };
-
-  deleteItem = (id) => {
-    this.setState(({ todoData }) => {
-      const inx = todoData.findIndex((el) => el.id === id);
-      todoData.splice(inx, 1);
-      const before = todoData.slice(0, inx);
-      const after = todoData.slice(inx);
-      const newArray = [...before, ...after];
-      return {
-        todoData: newArray,
-      };
-    });
-  };
-
-  addItem = (text, min, sec) => {
-    if (text.length !== 0 && text.trim() !== "") {
-      const newItem = this.createToDoItem(text, min, sec);
-      this.setState(({ todoData }) => {
-        const newArray = [...todoData, newItem];
-        return {
-          todoData: newArray,
-        };
-      });
-    }
-  };
-
-  createToDoItem(label, min, sec) {
-    return {
-      label,
-      done: false,
-      id: this.maxId++,
-      edited: false,
-      vision: true,
-      data: new Date(),
-      min,
-      sec,
-    };
-  }
-
-  render() {
-    const doneCount = this.state.todoData.filter((el) => el.done).length;
-    const todoCount = this.state.todoData.length - doneCount;
-    return (
-      <div>
-        <AppHeader done={doneCount} todo={todoCount} />
-        <NewTaskForm
-          onAdd={this.addItem}
-          label={this.state.label}
-          min={this.state.min}
-          sec={this.state.sec}
-        />
-        <TaskList
-          todos={this.state.todoData}
-          onDeleted={this.deleteItem}
-          onToggleDone={this.onToggleDone}
-          onToggleEdit={this.onToggleEdit}
-        />
-        <Taskfilter
-          doneCount={doneCount}
-          statusFilter={this.statusFilter}
-          clearCompleted={this.clearCompleted}
-        />
-      </div>
+  const toggleStatus = (id, status) => {
+    setTodoData((prevData) =>
+      prevData.map((item) =>
+        item.id === id ? { ...item, [status]: !item[status] } : item
+      )
     );
-  }
+  };
+
+  const statusFilterParametr = (get) => {
+    setTodoData((prevData) =>
+      prevData.map((item) => {
+        if (get === 1) {
+          return item.done ? { ...item, vision: true } : { ...item, vision: false };
+        }
+        if (get === 2) {
+          return { ...item, vision: true };
+        }
+        if (get === 3) {
+          return item.done ? { ...item, vision: false } : { ...item, vision: true };
+        }
+        return item;
+      })
+    );
+  };
+
+  const statusFilter = (text) => {
+    if (text === "done") {
+      statusFilterParametr(1);
+    } else if (text === "all") {
+      statusFilterParametr(2);
+    } else if (text === "active") {
+      statusFilterParametr(3);
+    }
+  };
+
+  const toggleEdit = (id) => {
+    toggleStatus(id, "edited");
+  };
+
+  const toggleDone = (id) => {
+    toggleStatus(id, "done");
+  };
+
+  const clearCompleted = () => {
+    setTodoData((prevData) => prevData.filter((item) => !item.done));
+  };
+
+  const doneCount = todoData.filter((el) => el.done).length;
+  const todoCount = todoData.length - doneCount;
+  return (
+    <div>
+      <AppHeader done={doneCount} todo={todoCount} />
+      <NewTaskForm onAdd={addItem} />
+      <TaskList
+        todos={todoData}
+        onDeleted={deleteItem}
+        onToggleDone={toggleDone}
+        onToggleEdit={toggleEdit}
+      />
+      <Taskfilter
+        doneCount={doneCount}
+        statusFilter={statusFilter}
+        clearCompleted={clearCompleted}
+      />
+    </div>
+  );
 }
 
 const root = createRoot(document.getElementById("root"));

@@ -4,7 +4,7 @@ import { SvgPause, SvgStart, SvgRestart } from "./svg-component";
 function Timer({ min, sec }) {
   const [minutes, setMinutes] = useState(min ? parseInt(min, 10) : 0);
   const [seconds, setSeconds] = useState(sec ? parseInt(sec, 10) : 0);
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(false);
 
   const startTimer = () => {
     setIsActive(true);
@@ -16,8 +16,8 @@ function Timer({ min, sec }) {
 
   const resetTimer = () => {
     setIsActive(false);
-    setMinutes(min);
-    setSeconds(sec || 0); // Устанавливаем 0, если sec не указан
+    setMinutes(min ? parseInt(min, 10) : 0);
+    setSeconds(sec ? parseInt(sec, 10) : 0);
   };
 
   const toggleTimer = () => {
@@ -30,34 +30,29 @@ function Timer({ min, sec }) {
 
   useEffect(() => {
     let interval;
-  
+
     if (isActive) {
       interval = setInterval(() => {
-        setSeconds((prevSeconds) => {
-          if (prevSeconds === 0) {
-            setMinutes((prevMinutes) => {
-              if (prevMinutes === 0) {
-                pauseTimer();
-                return 0;
-              }
-              return prevMinutes - 1;
-            });
-            return 59;
-          }
-          return prevSeconds - 1;
-        });
+        if (seconds > 0) {
+          setSeconds((prevSeconds) => prevSeconds - 1);
+        } else if (minutes > 0) {
+          setMinutes((prevMinutes) => prevMinutes - 1);
+          setSeconds(59);
+        } else {
+          pauseTimer();
+        }
       }, 1000);
     } else {
       clearInterval(interval);
     }
-  
+
     return () => {
       clearInterval(interval);
     };
-  }, [isActive]);
+  }, [isActive, minutes, seconds]);
 
   useEffect(() => {
-    if (min > 0 || sec > 0) {
+    if ((min && min > 0) || (sec && sec > 0)) {
       startTimer();
     }
   }, [min, sec]);
